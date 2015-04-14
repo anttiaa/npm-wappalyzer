@@ -27,7 +27,7 @@ exports.detectFromUrl = function(options, cb) {
 };
 
 function getHTMLFromUrl(url, cb) {
-	request(url, function(error, response, body) {
+	request({url: url, gzip: true}, function(error, response, body) {
 		if (!error && response.statusCode == 200) {
 			var data = {
 				html: body,
