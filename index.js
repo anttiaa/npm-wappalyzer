@@ -9,13 +9,17 @@ exports.detectFromHTML = function(options) {};
 
 exports.detectFromUrl = function(options, cb) {
 
-	var url = options.url;
+	var httpRequestSettings = {"gzip": true};
+	httpRequestSettings.url = options.url;
+	if (options.timeout) {
+		httpRequestSettings.timeout = options.timeout;
+	}
 
 	if (options.debug) {
 		console.log('Fetching the page');
 	}
 
-	getHTMLFromUrl(url, function(err, data) {
+	getHTMLFromUrl(httpRequestSettings, function(err, data) {
 		if (err || data === null) {
 			cb(err, null);
 		} else {
@@ -26,12 +30,12 @@ exports.detectFromUrl = function(options, cb) {
 	});
 };
 
-function getHTMLFromUrl(url, cb) {
-	request({url: url, gzip: true}, function(error, response, body) {
+function getHTMLFromUrl(httpRequestSettings, cb) {
+	request(httpRequestSettings, function(error, response, body) {
 		if (!error && response.statusCode == 200) {
 			var data = {
 				html: body,
-				url: url,
+				url: httpRequestSettings.url,
 				headers: response
 			};
 			cb(null, data);
