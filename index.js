@@ -36,7 +36,7 @@ function getHTMLFromUrl(httpRequestSettings, cb) {
 			var data = {
 				html: body,
 				url: httpRequestSettings.url,
-				headers: response
+				headers: response.headers
 			};
 			cb(null, data);
 		} else {
