@@ -40,6 +40,15 @@ function getHTMLFromUrl(httpRequestSettings, cb) {
 			};
 			cb(null, data);
 		} else {
+			if (!error) {
+				error = {};
+			}
+			if (response && response.statusCode) {
+				error.statusCode = response.statusCode;
+			}
+			else if (error.code == "ETIMEDOUT") {
+				error.statusCode = 408;
+			}
 			cb(error, null);
 		}
 	});
